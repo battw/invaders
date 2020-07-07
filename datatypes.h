@@ -16,7 +16,10 @@ struct Game {
   IntVector* positions;
   IntVector* velocities;
   bool* areVisible;
+
   int numberOfThings;
+  bool isExiting;
+  bool isPaused;
 };
 typedef struct Game Game;
 

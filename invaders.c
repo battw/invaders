@@ -4,8 +4,19 @@
 #include <stdlib.h>
 #include <unistd.h> //sleep, usleep
 
-Image getShipImage();
+Image newShipImage();
+void applyVelocities(Game* game);
 void loop(Game* game);
+void addPlayerShip(Game* game);
+Game* newGame();
+
+void inputHandlerInit();
+void inputUp(Game* game);
+void inputDown(Game* game);
+void inputLeft(Game* game);
+void inputRight(Game* game);
+void inputPause(Game* game);
+void inputQuit(Game* game);
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -32,17 +43,17 @@ void applyVelocities(Game* game)
 
 void loop(Game* game)
 {
-  float sleepTime = 3; 
-  bool running = 1;
-  while (running) {
+  while (!game->isExiting) {
+    pollInput(game);
+    if (game->isPaused) continue;
+
     render(game);
-    //applyVelocities(game);
-    sleep(sleepTime);
-    running = 0;
+    applyVelocities(game);
   }
 }
 
-void addPlayerShip(Game* game) {
+void addPlayerShip(Game* game)
+{
   game->positions[0].x = 10;
   game->positions[0].y = 20;
   game->images[0] = newShipImage();
@@ -63,13 +74,52 @@ Game* newGame()
   return game;
 }
 
+
+void inputUp(Game* game)
+{
+  --game->velocities[0].y;
+}
+
+void inputDown(Game* game)
+{
+  ++game->velocities[0].y;
+}
+void inputLeft(Game* game)
+{
+  --game->velocities[0].x;
+}
+void inputRight(Game* game)
+{
+  ++game->velocities[0].x;
+}
+void inputPause(Game* game)
+{
+  game->isPaused = !game->isPaused;
+}
+
+void inputQuit(Game* game) {
+  game->isExiting = 1;
+}
+
+void inputHandlerInit()
+{
+  registerUpFunction(inputUp);
+  registerDownFunction(inputDown);
+  registerLeftFunction(inputLeft);
+  registerRightFunction(inputRight);
+  registerPauseFunction(inputPause);
+  registerQuitFunction(inputQuit);
+}
+
 int main()
 {
-  startRenderer();
+  inputHandlerInit();
+  rendererStart();
+
   Game* game = newGame();
   loop(game);
-
-  stopRenderer();
+  
+  rendererStop();
   return 0;
 }
 

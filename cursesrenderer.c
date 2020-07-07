@@ -3,7 +3,7 @@
 #include <ncurses.h>
 
 
-void startRenderer() {
+void rendererStart() {
   initscr();              // curses initialisation
   noecho();               // don't echo input to the terminal
   keypad(stdscr, true);   // allow function, arrow... keys
@@ -13,7 +13,7 @@ void startRenderer() {
   halfdelay(2);
 }
 
-void stopRenderer() {
+void rendererStop() {
   endwin();               // cleanup
 }
 

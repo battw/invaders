@@ -1,10 +1,10 @@
-#ifndef CURSES_INCLUDED
-#define CURSES_INCLUDED
+#ifndef RENDERER_INCLUDED
+#define RENDERER_INCLUDED
 
 #include "datatypes.h"
 
-void startRenderer();
-void stopRenderer();
+void rendererStart();
+void rendererStop();
 void render(Game* game);
 
 #endif
