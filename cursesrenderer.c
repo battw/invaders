@@ -1,5 +1,5 @@
 #include "datatypes.h"
-#include "cursesrenderer.h"
+#include "renderer.h"
 #include <ncurses.h>
 
 

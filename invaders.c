@@ -1,6 +1,6 @@
 #include "datatypes.h"
-#include "cursesrenderer.h"
-#include "cursesinputhandler.h"
+#include "renderer.h"
+#include "inputhandler.h"
 #include <stdlib.h>
 #include <unistd.h> //sleep, usleep
 

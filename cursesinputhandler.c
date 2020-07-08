@@ -1,4 +1,4 @@
-#include "cursesinputhandler.h"
+#include "inputhandler.h"
 #include "datatypes.h"
 #include <ncurses.h>
 
