@@ -3,13 +3,13 @@
 
 #include "datatypes.h"
 
-void pollInput(Game* game);
-void registerUpFunction(void (*functionPointer)(Game* game));
-void registerDownFunction(void (*functionPointer)(Game* game));
-void registerLeftFunction(void (*functionPointer)(Game* game));
-void registerRightFunction(void (*functionPointer)(Game* game));
-void registerQuitFunction(void (*functionPointer)(Game* game));
-void registerPauseFunction(void (*functionPointer)(Game* game));
+void inputPoll(Game* game);
+void inputSetUpCallback(void (*functionPointer)(Game* game));
+void inputSetDownCallback(void (*functionPointer)(Game* game));
+void inputSetLeftCallback(void (*functionPointer)(Game* game));
+void inputSetRightCallback(void (*functionPointer)(Game* game));
+void inputSetQuitCallback(void (*functionPointer)(Game* game));
+void inputSetPauseCallback(void (*functionPointer)(Game* game));
 
 #endif
                                 

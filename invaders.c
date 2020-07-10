@@ -1,26 +1,27 @@
 #include "datatypes.h"
 #include "renderer.h"
 #include "inputhandler.h"
+#include "spaceinvader.h"
 #include <stdlib.h>
 #include <unistd.h> //sleep, usleep
 
-Image newShipImage();
+Image getShipImage();
 void applyVelocities(Game* game);
 void loop(Game* game);
-void addPlayerShip(Game* game);
+void spawnPlayerShip(Game* game);
 Game* newGame();
 
 void inputHandlerInit();
-void inputUp(Game* game);
-void inputDown(Game* game);
-void inputLeft(Game* game);
-void inputRight(Game* game);
-void inputPause(Game* game);
-void inputQuit(Game* game);
+void moveUp(Game* game);
+void moveDown(Game* game);
+void moveLeft(Game* game);
+void moveRight(Game* game);
+void pauseGame(Game* game);
+void quitGame(Game* game);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-Image newShipImage()
+Image getShipImage()
 {
   /*
           |
@@ -33,6 +34,7 @@ Image newShipImage()
   return "  |\n  O\n  O\n OOO \nOOOOO\n^ ^ ^\n";
 }
 
+
 void applyVelocities(Game* game)
 {
   for (int i = 0; i < game->numberOfThings; ++i) {
@@ -41,74 +43,93 @@ void applyVelocities(Game* game)
   }
 }
 
+void handleAI(Game* game) {
+  for (int i = 0; i < game->numberOfThings; ++i) {
+    if (game->aiFunctions[i] != NULL) {
+      game->aiFunctions[i](game, i);
+    }
+  }
+}
+
 void loop(Game* game)
 {
+  spaceInvaderSpawn(game);
   while (!game->isExiting) {
-    pollInput(game);
+    inputPoll(game);
     if (game->isPaused) continue;
 
     render(game);
     applyVelocities(game);
+    handleAI(game);
   }
 }
 
-void addPlayerShip(Game* game)
+void spawnPlayerShip(Game* game)
 {
-  game->positions[0].x = 10;
-  game->positions[0].y = 20;
-  game->images[0] = newShipImage();
+  // TODO spawn position should take into account window size.
+  game->positions[0].x = 120;
+  game->positions[0].y = 45;
+  game->images[0] = getShipImage();
   game->areVisible[0] = 1;
+  // TODO this might increment past the capacity of the game.
+  ++game->numberOfThings;
 }
 
 Game* newGame()
 {
   Game* game = calloc(1, sizeof(Game));
-  game->numberOfThings = 1;
 
-  game->positions = calloc(game->numberOfThings, sizeof(IntVector));
-  game->velocities = calloc(game->numberOfThings, sizeof(IntVector));
-  game->images = calloc(game->numberOfThings, sizeof(Image*));
-  game->areVisible = calloc(game->numberOfThings, sizeof(bool));
-  
-  addPlayerShip(game);
+  game->capacity = 256;
+  game->numberOfThings = 0;
+  game->isExiting = 0;
+  game->isPaused = 0;
+
+  game->positions = calloc(game->capacity, sizeof(IntVector));
+  game->velocities = calloc(game->capacity, sizeof(IntVector));
+  game->images = calloc(game->capacity, sizeof(Image));
+  game->areVisible = calloc(game->capacity, sizeof(bool));
+  game->aiStates = calloc(game->numberOfThings, sizeof(AIstate));
+  game->aiFunctions = calloc(game->numberOfThings, sizeof(AIfunction));
+
+  spawnPlayerShip(game);
   return game;
 }
 
 
-void inputUp(Game* game)
+void moveUp(Game* game)
 {
   --game->velocities[0].y;
 }
 
-void inputDown(Game* game)
+void moveDown(Game* game)
 {
   ++game->velocities[0].y;
 }
-void inputLeft(Game* game)
+void moveLeft(Game* game)
 {
   --game->velocities[0].x;
 }
-void inputRight(Game* game)
+void moveRight(Game* game)
 {
   ++game->velocities[0].x;
 }
-void inputPause(Game* game)
+void pauseGame(Game* game)
 {
   game->isPaused = !game->isPaused;
 }
 
-void inputQuit(Game* game) {
+void quitGame(Game* game) {
   game->isExiting = 1;
 }
 
 void inputHandlerInit()
 {
-  registerUpFunction(inputUp);
-  registerDownFunction(inputDown);
-  registerLeftFunction(inputLeft);
-  registerRightFunction(inputRight);
-  registerPauseFunction(inputPause);
-  registerQuitFunction(inputQuit);
+  inputSetUpCallback(moveUp);
+  inputSetDownCallback(moveDown);
+  inputSetLeftCallback(moveLeft);
+  inputSetRightCallback(moveRight);
+  inputSetPauseCallback(pauseGame);
+  inputSetQuitCallback(quitGame);
 }
 
 int main()

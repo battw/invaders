@@ -16,7 +16,7 @@ static void applyFunction(void (*functionPointer)(Game* game), Game* game)
   }
 }
 
-void pollInput(Game* game)
+void inputPoll(Game* game)
 {
   int ch = getch();
 
@@ -44,32 +44,32 @@ void pollInput(Game* game)
   }
 }
 
-void registerUpFunction(void (*functionPointer)(Game* game))
+void inputSetUpCallback(void (*functionPointer)(Game* game))
 {
   up = functionPointer;
 }
 
-void registerDownFunction(void (*functionPointer)(Game* game))
+void inputSetDownCallback(void (*functionPointer)(Game* game))
 {
   down = functionPointer;
 }
 
-void registerLeftFunction(void (*functionPointer)(Game* game))
+void inputSetLeftCallback(void (*functionPointer)(Game* game))
 {
   left = functionPointer;
 }
 
-void registerRightFunction(void (*functionPointer)(Game* game))
+void inputSetRightCallback(void (*functionPointer)(Game* game))
 {
   right = functionPointer;
 }
 
-void registerQuitFunction(void (*functionPointer)(Game* game))
+void inputSetQuitCallback(void (*functionPointer)(Game* game))
 {
   quit = functionPointer;
 }
 
-void registerPauseFunction(void (*functionPointer)(Game* game))
+void inputSetPauseCallback(void (*functionPointer)(Game* game))
 {
   pause = functionPointer;
 }
