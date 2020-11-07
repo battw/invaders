@@ -2,8 +2,11 @@
 #include "spaceinvader.h"
 #include <stdlib.h>
 
-#define CHANGETIME 50;
+
+static Image spaceInvaderGetImage();
 enum AIstateCodes {TIMER};
+
+#define CHANGETIME 50;
 
 
 static void think(Game* game, int i) {
@@ -26,7 +29,7 @@ void spaceInvaderSpawn(Game* game) {
   game->aiFunctions[i] = think;
 }
 
-Image spaceInvaderGetImage() {
+static Image spaceInvaderGetImage() {
   /*     
          \    /
         /=0==0=\

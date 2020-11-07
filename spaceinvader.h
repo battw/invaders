@@ -4,6 +4,5 @@
 #include "datatypes.h"
 
 void spaceInvaderSpawn(Game* game);
-Image spaceInvaderGetImage();
 
 #endif
