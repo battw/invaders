@@ -1,10 +1,22 @@
 #include "datatypes.h"
 #include "renderer.h"
 #include <ncurses.h>
+#include <stdbool.h>
 
+////////////////////////////////////////////////////////////////////////////////
+
+static bool isInBounds(int x, int y);
+static void drawVisible(Game* game);
+static void drawImage(int x, int y, Image *image);
+
+////////////////////////////////////////////////////////////////////////////////
+
+WINDOW* screen;
+
+////////////////////////////////////////////////////////////////////////////////
 
 void rendererStart() {
-  initscr();              // curses initialisation
+  screen = initscr();              // curses initialisation
   noecho();               // don't echo input to the terminal
   keypad(stdscr, true);   // allow function, arrow... keys
   curs_set(0);
@@ -17,19 +29,35 @@ void rendererStop() {
   endwin();               // cleanup
 }
 
+void render(Game* game) {
+  clear();
+  drawVisible(game);
+  refresh();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+static bool isInBounds(int x, int y) {
+      int maxY, maxX;
+      getmaxyx(screen, maxY, maxX);
+      return (y >= 0 && x >= 0 && y < maxY  && x < maxX);
+}
+
 static void drawImage(int x, int y, Image *image) {
-  int minX = x;
+  int imageX = x;
   int charIndex = 0;
   char ch;
   while ('\0' != (ch = (*image)[charIndex])) {
     if (ch == '\n') {
-      x = minX;
+      x = imageX;
       ++y;
     } else if (ch == ' ') {
       ++x;
     } else {
-      move(y, x);
-      addch(ch);
+      if (isInBounds(x, y)) {
+        move(y, x);
+        addch(ch);
+      }
       ++x;
     }
     ++charIndex;
@@ -44,8 +72,3 @@ static void drawVisible(Game* game) {
   }
 }
                         
-void render(Game* game) {
-  clear();
-  drawVisible(game);
-  refresh();
-}
