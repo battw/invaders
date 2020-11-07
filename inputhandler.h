@@ -3,13 +3,15 @@
 
 #include "datatypes.h"
 
+void inputInit(void (*up)(Game* game)
+                      , void (*down)(Game* game)
+                      , void (*left)(Game* game)
+                      , void (*right)(Game* game)
+                      , void (*pause)(Game* game)
+                      , void (*quit)(Game* game)
+);
+
 void inputPoll(Game* game);
-void inputSetUpCallback(void (*functionPointer)(Game* game));
-void inputSetDownCallback(void (*functionPointer)(Game* game));
-void inputSetLeftCallback(void (*functionPointer)(Game* game));
-void inputSetRightCallback(void (*functionPointer)(Game* game));
-void inputSetQuitCallback(void (*functionPointer)(Game* game));
-void inputSetPauseCallback(void (*functionPointer)(Game* game));
 
 #endif
                                 

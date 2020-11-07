@@ -9,17 +9,29 @@ void (*right)(Game* game);
 void (*pause)(Game* game);
 void (*quit)(Game* game);
 
-static void applyFunction(void (*functionPointer)(Game* game), Game* game)
-{
-  if (functionPointer != NULL) {
-    functionPointer(game);
-  }
+static void applyFunction(void (*functionPointer)(Game* game), Game* game);
+
+////////////////////////////////////////////////////////////////////////////////
+
+void inputInit(void (*playerUp)(Game* game)
+                      , void (*playerDown)(Game* game)
+                      , void (*playerLeft)(Game* game)
+                      , void (*playerRight)(Game* game)
+                      , void (*gamePause)(Game* game)
+                      , void (*gameQuit)(Game* game)
+) {
+
+  up = playerUp;
+  down = playerDown;
+  left = playerLeft;
+  right = playerRight;
+  pause = gamePause;
+  quit = gameQuit;
 }
 
 void inputPoll(Game* game)
 {
   int ch = getch();
-
   if (ch == ERR) return;
 
   switch(ch) {
@@ -44,32 +56,12 @@ void inputPoll(Game* game)
   }
 }
 
-void inputSetUpCallback(void (*functionPointer)(Game* game))
-{
-  up = functionPointer;
-}
 
-void inputSetDownCallback(void (*functionPointer)(Game* game))
-{
-  down = functionPointer;
-}
+////////////////////////////////////////////////////////////////////////////////
 
-void inputSetLeftCallback(void (*functionPointer)(Game* game))
+static void applyFunction(void (*functionPointer)(Game* game), Game* game)
 {
-  left = functionPointer;
-}
-
-void inputSetRightCallback(void (*functionPointer)(Game* game))
-{
-  right = functionPointer;
-}
-
-void inputSetQuitCallback(void (*functionPointer)(Game* game))
-{
-  quit = functionPointer;
-}
-
-void inputSetPauseCallback(void (*functionPointer)(Game* game))
-{
-  pause = functionPointer;
+  if (functionPointer != NULL) {
+    functionPointer(game);
+  }
 }

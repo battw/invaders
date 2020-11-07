@@ -6,12 +6,9 @@
 #include <stdlib.h>
 #include <unistd.h> //sleep, usleep
 
-Image getShipImage();
 void applyVelocities(Game* game);
 void loop(Game* game);
-void spawnPlayerShip(Game* game);
 Game* newGame();
-
 void inputHandlerInit();
 void moveUp(Game* game);
 void moveDown(Game* game);
@@ -74,45 +71,36 @@ Game* newGame()
 }
 
 
-void moveUp(Game* game)
+void playerUp(Game* game)
 {
   --game->velocities[0].y;
 }
 
-void moveDown(Game* game)
+void playerDown(Game* game)
 {
   ++game->velocities[0].y;
 }
-void moveLeft(Game* game)
+void playerLeft(Game* game)
 {
   --game->velocities[0].x;
 }
-void moveRight(Game* game)
+void playerRight(Game* game)
 {
   ++game->velocities[0].x;
 }
-void pauseGame(Game* game)
+void gamePause(Game* game)
 {
   game->isPaused = !game->isPaused;
 }
 
-void quitGame(Game* game) {
+void gameQuit(Game* game) {
   game->isExiting = 1;
 }
 
-void inputHandlerInit()
-{
-  inputSetUpCallback(moveUp);
-  inputSetDownCallback(moveDown);
-  inputSetLeftCallback(moveLeft);
-  inputSetRightCallback(moveRight);
-  inputSetPauseCallback(pauseGame);
-  inputSetQuitCallback(quitGame);
-}
 
 int main()
 {
-  inputHandlerInit();
+  inputInit(playerUp, playerDown, playerLeft, playerRight, gamePause, gameQuit);
   rendererStart();
 
   Game* game = newGame();

@@ -1,3 +1,4 @@
 *.o
 *scratch*
 invaders
+.ccls-cache

@@ -16,12 +16,12 @@ WINDOW* screen;
 ////////////////////////////////////////////////////////////////////////////////
 
 void rendererStart() {
-  screen = initscr();              // curses initialisation
-  noecho();               // don't echo input to the terminal
-  keypad(stdscr, true);   // allow function, arrow... keys
+  screen = initscr();       // curses initialisation
+  noecho();                 // don't echo input to the terminal
+  keypad(stdscr, true);     // allow function, arrow... keys
   curs_set(0);
-  raw();		  // read character data without requiring enter key
-  //nodelay(stdscr, TRUE);  // prevent getch() from blocking
+  raw();                    // read character data without requiring enter key
+  // nodelay(stdscr, TRUE);  // prevent getch() from blocking
   halfdelay(2);
 }
 
@@ -67,8 +67,7 @@ static void drawImage(int x, int y, Image *image) {
 static void drawVisible(Game* game) {
   for (int i = 0; i < game->numberOfThings; ++i) {
     if (game->areVisible[i]) {
-      drawImage(game->positions[i].x, game->positions[i].y, &game->images[i]); 
+      drawImage(game->positions[i].x, game->positions[i].y, &game->images[i]);
     }
   }
 }
-                        
