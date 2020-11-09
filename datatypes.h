@@ -1,11 +1,11 @@
 #ifndef DATATYPES_INCLUDED
 #define DATATYPES_INCLUDED
 
+#include <stdbool.h>
+
 struct Game;
 
 typedef struct Game Game;
-
-typedef char bool;
 
 typedef char* Image;
 

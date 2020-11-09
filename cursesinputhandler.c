@@ -13,6 +13,9 @@ static void applyFunction(void (*functionPointer)(Game* game), Game* game);
 
 ////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Initialise the input handler. Takes function pointers to be set as callbacks
+ * for each possible action. */
 void inputInit(void (*playerUp)(Game* game)
                       , void (*playerDown)(Game* game)
                       , void (*playerLeft)(Game* game)
@@ -55,7 +58,6 @@ void inputPoll(Game* game)
     break;
   }
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 

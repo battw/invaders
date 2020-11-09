@@ -1,7 +1,6 @@
 #include "datatypes.h"
 #include "renderer.h"
 #include <ncurses.h>
-#include <stdbool.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -33,6 +32,12 @@ void render(Game* game) {
   clear();
   drawVisible(game);
   refresh();
+}
+
+IntVector rendererGetSize() {
+  IntVector size;
+  getmaxyx(screen, size.y, size.x);
+  return size;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

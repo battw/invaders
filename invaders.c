@@ -9,17 +9,10 @@
 void applyVelocities(Game* game);
 void loop(Game* game);
 Game* newGame();
-void inputHandlerInit();
-void moveUp(Game* game);
-void moveDown(Game* game);
-void moveLeft(Game* game);
-void moveRight(Game* game);
-void pauseGame(Game* game);
-void quitGame(Game* game);
+void gamePause(Game* game);
+void gameQuit(Game* game);
 
 ////////////////////////////////////////////////////////////////////////////////
-
-
 
 void applyVelocities(Game* game)
 {
@@ -50,13 +43,12 @@ void loop(Game* game)
   }
 }
 
-
 Game* newGame()
 {
   Game* game = calloc(1, sizeof(Game));
 
   game->capacity = 256;
-  game->numberOfThings = 0;
+  game->numberOfThings = 1;
   game->isExiting = 0;
   game->isPaused = 0;
   game->positions = calloc(game->capacity, sizeof(IntVector));
@@ -70,24 +62,6 @@ Game* newGame()
   return game;
 }
 
-
-void playerUp(Game* game)
-{
-  --game->velocities[0].y;
-}
-
-void playerDown(Game* game)
-{
-  ++game->velocities[0].y;
-}
-void playerLeft(Game* game)
-{
-  --game->velocities[0].x;
-}
-void playerRight(Game* game)
-{
-  ++game->velocities[0].x;
-}
 void gamePause(Game* game)
 {
   game->isPaused = !game->isPaused;
@@ -97,15 +71,13 @@ void gameQuit(Game* game) {
   game->isExiting = 1;
 }
 
-
 int main()
 {
-  inputInit(playerUp, playerDown, playerLeft, playerRight, gamePause, gameQuit);
   rendererStart();
+  inputInit(playerUp, playerDown, playerLeft, playerRight, gamePause, gameQuit);
 
   Game* game = newGame();
   loop(game);
-  
   rendererStop();
   return 0;
 }
