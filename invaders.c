@@ -3,6 +3,7 @@
 #include "inputhandler.h"
 #include "player.h"
 #include "spaceinvader.h"
+#include "collision.h"
 #include <stdlib.h>
 #include <unistd.h> //sleep, usleep
 
@@ -22,12 +23,18 @@ void applyVelocities(Game* game)
   }
 }
 
-void handleAI(Game* game) {
+void handleAI(Game* game)
+{
   for (int i = 0; i < game->numberOfThings; ++i) {
     if (game->aiFunctions[i] != NULL) {
       game->aiFunctions[i](game, i);
     }
   }
+}
+
+void handleCollisions(Game* game)
+{
+  rendererDisplayMessage("collisions");
 }
 
 void loop(Game* game)
@@ -40,10 +47,11 @@ void loop(Game* game)
     render(game);
     applyVelocities(game);
     handleAI(game);
+    handleCollisions(game);
   }
 }
 
-Game* newGame()
+Game* gameNew()
 {
   Game* game = calloc(1, sizeof(Game));
 
@@ -57,6 +65,7 @@ Game* newGame()
   game->areVisible = calloc(game->capacity, sizeof(bool));
   game->aiStates = calloc(game->numberOfThings, sizeof(AIstate));
   game->aiFunctions = calloc(game->numberOfThings, sizeof(AIfunction));
+  game->collisionPlane = collisionPlaneNew(rendererGetSize());
 
   playerSpawn(game);
   return game;
@@ -76,7 +85,7 @@ int main()
   rendererStart();
   inputInit(playerUp, playerDown, playerLeft, playerRight, gamePause, gameQuit);
 
-  Game* game = newGame();
+  Game* game = gameNew();
   loop(game);
   rendererStop();
   return 0;

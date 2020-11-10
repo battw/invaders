@@ -1,6 +1,8 @@
 #include "datatypes.h"
 #include "renderer.h"
 #include <ncurses.h>
+#include <stdlib.h>
+#include <string.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -11,6 +13,7 @@ static void drawImage(int x, int y, Image *image);
 ////////////////////////////////////////////////////////////////////////////////
 
 WINDOW* screen;
+char* message;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -31,6 +34,8 @@ void rendererStop() {
 void render(Game* game) {
   clear();
   drawVisible(game);
+  move(0, 0);
+  printw(message);
   refresh();
 }
 
@@ -38,6 +43,12 @@ IntVector rendererGetSize() {
   IntVector size;
   getmaxyx(screen, size.y, size.x);
   return size;
+}
+
+void rendererDisplayMessage(char* msg) {
+  if (message != NULL) free(message);
+  message = calloc(strlen(msg), 1);
+  strcpy(message, msg);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

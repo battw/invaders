@@ -7,5 +7,6 @@ void rendererStart();
 void rendererStop();
 void render(Game* game);
 IntVector rendererGetSize();
+void rendererDisplayMessage(char* msg);
 
 #endif
