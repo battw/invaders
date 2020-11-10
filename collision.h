@@ -1,11 +1,13 @@
-#ifndef INCLUDED_COLLISION
-#define INCLUDED_COLLISION
+#ifndef COLLISION_INCLUDED
+#define COLLISION_INCLUDED
 
 #include "datatypes.h"
 
-
 CollisionPlane* collisionPlaneNew(IntVector size);
-
 void collisionPlaneClear(CollisionPlane* plane);
+void collisionPlaneWrite(CollisionPlane* plane, int x, int y, int id);
+int collisionPlaneRead(CollisionPlane* plane, int x, int y);
 
-#endif // INCLUDED_COLLISION
+CollisionShape* collisionShapeNew(int length, IntVector* coordinates);
+
+#endif // COLLISION_INCLUDED

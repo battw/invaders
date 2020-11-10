@@ -9,6 +9,7 @@ typedef char* Image;
 struct IntVector;
 typedef struct IntVector IntVector;
 
+
 ////////////////////////////////////////////////////////////////////////////////
 struct Game;
 typedef struct Game Game;
@@ -37,12 +38,13 @@ struct IntVector {
 };
 
 struct CollisionPlane {
-    IntVector size;
-    int* plane;
+  IntVector size;
+  int* plane;
 };
 
 struct CollisionShape {
-   IntVector* coordinates;
+  int length;
+  IntVector* coordinates;
 };
 
 struct Game {
@@ -55,6 +57,7 @@ struct Game {
   AIfunction* aiFunctions;
 
   CollisionPlane* collisionPlane;
+  CollisionShape* collisionShapes;
 
   int capacity;
   int numberOfThings;
@@ -62,4 +65,4 @@ struct Game {
   bool isPaused;
 };
 
-#endif
+#endif // DATATYPES_INCLUDED
