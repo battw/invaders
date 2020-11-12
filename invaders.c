@@ -38,29 +38,17 @@ void handleAI(Game* game)
 
 void handleCollisions(Game* game)
 {
-  /* char msg[10]; */
-  /* sprintf(msg, "%d\n", game->collisionShapes[1].coordinates[12].x); */
-  /* rendererDisplayMessage(msg); */
-  for (int id = 1; id < game->numberOfThings; ++id) {
-    CollisionShape* shape = &game->collisionShapes[id];
-    IntVector* position = &game->positions[id];
-    for (int j = 0; j < shape->length; ++j) {
-      collisionPlaneWrite(game->collisionPlane,
-                          position->x + shape->coordinates[j].x,
-                          position->y + shape->coordinates[j].y,
-                          id);
-    }
-  }
-  CollisionShape* playerShape = &game->collisionShapes[0];
-  IntVector* playerPosition = &game->positions[0];
-  for (int k = 0; k < playerShape->length; ++k) {
-    int hit = collisionPlaneRead(game->collisionPlane,
-                       playerPosition->x + playerShape->coordinates[k].x,
-                       playerPosition->y + playerShape->coordinates[k].y);
-    if (hit > 0) {
+  for (int id = 0; id < game->numberOfThings; ++id) {
+    int collisionId = collisionPlaneCheck(game->collisionPlane,
+                                          &game->collisionShapes[id],
+                                          game->positions[id]);
+    if (collisionId >= 0) {
       rendererDisplayMessage("HIT");
-      break;
+    } else {
+      rendererDisplayMessage("");
     }
+    collisionPlaneDraw(game->collisionPlane, &game->collisionShapes[id],
+                       game->positions[id], id);
   }
   collisionPlaneClear(game->collisionPlane);
 }

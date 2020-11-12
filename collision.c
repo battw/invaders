@@ -14,18 +14,36 @@ void collisionPlaneClear(CollisionPlane* plane) {
     plane->plane = calloc(plane->size.x * plane->size.y, sizeof(int));
 }
 
-void collisionPlaneWrite(CollisionPlane* plane, int x, int y, int id) {
-    if (x < 0 || y < 0 || x >= plane->size.x || y >= plane->size.y)
-        return;
-    int index = plane->size.x * y + x;
-    plane->plane[index] = id;
+int collisionPlaneCheck(CollisionPlane* plane, CollisionShape* shape, IntVector position) {
+    int collisionId = -1;
+    for (int i = 0; i < shape->length; ++i) {
+        IntVector readPosition = {position.x + shape->coordinates[i].x, position.y + shape->coordinates[i].y};
+        collisionId = collisionPlaneRead(plane, readPosition);
+        if (collisionId >= 0) break;
+    }
+    return collisionId;
 }
 
-int collisionPlaneRead(CollisionPlane* plane, int x, int y) {
-    if (x < 0 || y < 0 || x >= plane->size.x || y >= plane->size.y)
+void collisionPlaneWrite(CollisionPlane* plane, IntVector position, int id) {
+    if (position.x < 0 || position.y < 0 || position.x >= plane->size.x || position.y >= plane->size.y)
+        return;
+    int index = plane->size.x * position.y + position.x;
+    plane->plane[index] = id + 1;
+}
+
+void collisionPlaneDraw(CollisionPlane* plane, CollisionShape* shape, IntVector position, int id) {
+    for (int i = 0; i < shape->length; i++) {
+        IntVector writePosition = {position.x + shape->coordinates[i].x, position.y + shape->coordinates[i].y};
+        collisionPlaneWrite(plane, writePosition, id);
+    }
+}
+
+/** Returns the id of the collision shape at the given position. */
+int collisionPlaneRead(CollisionPlane* plane, IntVector position) {
+    if (position.x < 0 || position.y < 0 || position.x >= plane->size.x || position.y >= plane->size.y)
         return -1;
-    int index = plane->size.x * y + x;
-    return plane->plane[index];
+    int index = plane->size.x * position.y + position.x;
+    return plane->plane[index] - 1;
 }
 
 CollisionShape* collisionShapeNew(int length, IntVector* coordinates) {
