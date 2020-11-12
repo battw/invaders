@@ -4,5 +4,6 @@
 #include "datatypes.h"
 
 void spaceInvaderSpawn(Game* game);
+void spaceInvaderCollide(Game* game, int id);
 
 #endif

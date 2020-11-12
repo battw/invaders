@@ -42,11 +42,16 @@ void handleCollisions(Game* game)
     int collisionId = collisionPlaneCheck(game->collisionPlane,
                                           &game->collisionShapes[id],
                                           game->positions[id]);
+
     if (collisionId >= 0) {
-      rendererDisplayMessage("HIT");
-    } else {
-      rendererDisplayMessage("");
+       if (game->collisionFunctions[id] != NULL) {
+         game->collisionFunctions[id](game, id);
+       }
+       if (game->collisionFunctions[collisionId] != NULL) {
+         game->collisionFunctions[collisionId](game, collisionId);
+       }
     }
+
     collisionPlaneDraw(game->collisionPlane, &game->collisionShapes[id],
                        game->positions[id], id);
   }
@@ -85,12 +90,14 @@ Game* gameNew()
 
   game->images = calloc(game->capacity, sizeof(Image));
   game->areVisible = calloc(game->capacity, sizeof(bool));
+  game->areAlive = calloc(game->capacity, sizeof(bool));
 
   game->aiStates = calloc(game->numberOfThings, sizeof(AIstate));
   game->aiFunctions = calloc(game->numberOfThings, sizeof(AIfunction));
 
   game->collisionPlane = collisionPlaneNew(rendererGetSize());
   game->collisionShapes = calloc(game->capacity, sizeof(CollisionShape));
+  game->collisionFunctions = calloc(game->capacity, sizeof(CollisionFunction));
   
   playerSpawn(game);
   return game;

@@ -23,6 +23,7 @@ typedef struct CollisionPlane CollisionPlane;
 struct CollisionShape;
 typedef struct CollisionShape CollisionShape;
 
+typedef void (*CollisionFunction)(Game* game, int id);
 
 ////////////////////////////////////////////////////////////////////////////////
 typedef int* AIstate;
@@ -52,12 +53,14 @@ struct Game {
   IntVector* positions;
   IntVector* velocities;
   bool* areVisible;
+  bool* areAlive;
 
   AIstate* aiStates;
   AIfunction* aiFunctions;
 
   CollisionPlane* collisionPlane;
   CollisionShape* collisionShapes;
+  CollisionFunction* collisionFunctions;
 
   int capacity;
   int numberOfThings;

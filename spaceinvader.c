@@ -12,25 +12,33 @@ enum AIstateCodes {TIMER};
 #define CHANGETIME 50;
 
 
-static void think(Game* game, int i) {
-  int timer = --game->aiStates[i][TIMER];
+static void think(Game* game, int id) {
+  if (!game->areAlive[id]) return;
+
+  int timer = --game->aiStates[id][TIMER];
   if (timer == 0) {
-    game->aiStates[i][TIMER] = CHANGETIME;
-    game->velocities[i].x = -game->velocities[i].x;
+    game->aiStates[id][TIMER] = CHANGETIME;
+    game->velocities[id].x = -game->velocities[id].x;
   }
 }
 
 void spaceInvaderSpawn(Game* game) {
   int id = game->numberOfThings++;
+
+  game->images[id] = spaceInvaderGetImage();
   game->positions[id].x = 10;
   game->positions[id].y = 10;
-  game->images[id] = spaceInvaderGetImage();
-  game->areVisible[id] = 1;
   game->velocities[id].x = 1;
+
+  game->areVisible[id] = true;
+  game->areAlive[id] = true;
+
   game->aiStates[id] = calloc(1, sizeof(int));
   game->aiStates[id][TIMER] = CHANGETIME;
   game->aiFunctions[id] = think;
+
   game->collisionShapes[id] = *spaceInvaderGetCollisionShape();
+  game->collisionFunctions[id] = spaceInvaderCollide;
 }
 
 static Image spaceInvaderGetImage() {
@@ -55,4 +63,9 @@ static CollisionShape* spaceInvaderGetCollisionShape() {
   }
 
   return collisionShapeNew(size.x * size.y, coordinates);
+}
+
+void spaceInvaderCollide(Game* game, int id) {
+  game->images[id] = "##########\n##########\n##########\n##########\n##########\n";
+  game->areAlive[id] = false;
 }
