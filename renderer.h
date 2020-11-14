@@ -3,8 +3,8 @@
 
 #include "datatypes.h"
 
-void rendererStart();
-void rendererStop();
+void rendererInit();
+void rendererDeinit();
 void render(Game* game);
 IntVector rendererGetSize();
 void rendererDisplayMessage(char* msg);

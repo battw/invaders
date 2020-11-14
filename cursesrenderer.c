@@ -18,17 +18,17 @@ char* message;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void rendererStart() {
+void rendererInit() {
   screen = initscr();       // curses initialisation
   noecho();                 // don't echo input to the terminal
-  keypad(stdscr, true);     // allow function, arrow... keys
+  keypad(screen, true);     // allow function, arrow... keys
   curs_set(0);
   raw();                    // read character data without requiring enter key
-  // nodelay(stdscr, TRUE);  // prevent getch() from blocking
+  nodelay(screen, TRUE);    // prevent getch() from blocking
   halfdelay(2);
 }
 
-void rendererStop() {
+void rendererDeinit() {
   endwin();               // cleanup
 }
 

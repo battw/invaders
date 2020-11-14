@@ -3,7 +3,7 @@
 
 #include "datatypes.h"
 
-void spaceInvaderSpawn(Game* game);
+void spaceInvaderSpawn(Game* game, IntVector position);
 void spaceInvaderCollide(Game* game, int id);
 
 #endif

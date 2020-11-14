@@ -4,6 +4,7 @@
 #include "player.h"
 #include "spaceinvader.h"
 #include "collision.h"
+#include "level.h"
 #include <stdlib.h>
 #include <unistd.h> //sleep, usleep
 #include <stdio.h>
@@ -60,7 +61,6 @@ void handleCollisions(Game* game)
 
 void loop(Game* game)
 {
-  gamePopulate(game);
   while (!game->isExiting) {
     inputPoll(game);
     if (game->isPaused) continue;
@@ -72,14 +72,12 @@ void loop(Game* game)
   }
 }
 
-void gamePopulate(Game* game) {
-  spaceInvaderSpawn(game);
-}
 
-Game* gameNew()
+Game* gameNew(IntVector size)
 {
   Game* game = calloc(1, sizeof(Game));
 
+  game->size = size;
   game->capacity = 256;
   game->numberOfThings = 1;
   game->isExiting = 0;
@@ -92,8 +90,8 @@ Game* gameNew()
   game->areVisible = calloc(game->capacity, sizeof(bool));
   game->areAlive = calloc(game->capacity, sizeof(bool));
 
-  game->aiStates = calloc(game->numberOfThings, sizeof(AIstate));
-  game->aiFunctions = calloc(game->numberOfThings, sizeof(AIfunction));
+  game->aiStates = calloc(game->capacity, sizeof(AIstate));
+  game->aiFunctions = calloc(game->capacity, sizeof(AIfunction));
 
   game->collisionPlane = collisionPlaneNew(rendererGetSize());
   game->collisionShapes = calloc(game->capacity, sizeof(CollisionShape));
@@ -114,12 +112,14 @@ void gameQuit(Game* game) {
 
 int main()
 {
-  rendererStart();
-  inputInit(playerUp, playerDown, playerLeft, playerRight, gamePause, gameQuit);
+  rendererInit();
+  inputInit(playerUp, playerDown, playerLeft, playerRight, playerFire, gamePause, gameQuit);
 
-  Game* game = gameNew();
+  Game* game = gameNew(rendererGetSize());
+  level(game, 1);
   loop(game);
-  rendererStop();
+
+  rendererDeinit();
   return 0;
 }
 

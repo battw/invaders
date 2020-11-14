@@ -19,11 +19,11 @@ typedef struct Game Game;
 struct CollisionPlane;
 typedef struct CollisionPlane CollisionPlane;
 
-
 struct CollisionShape;
 typedef struct CollisionShape CollisionShape;
 
 typedef void (*CollisionFunction)(Game* game, int id);
+
 
 ////////////////////////////////////////////////////////////////////////////////
 typedef int* AIstate;
@@ -49,6 +49,12 @@ struct CollisionShape {
 };
 
 struct Game {
+  IntVector size;
+  int capacity;
+  int numberOfThings;
+  bool isExiting;
+  bool isPaused;
+
   Image* images;
   IntVector* positions;
   IntVector* velocities;
@@ -61,11 +67,6 @@ struct Game {
   CollisionPlane* collisionPlane;
   CollisionShape* collisionShapes;
   CollisionFunction* collisionFunctions;
-
-  int capacity;
-  int numberOfThings;
-  bool isExiting;
-  bool isPaused;
 };
 
 #endif // DATATYPES_INCLUDED

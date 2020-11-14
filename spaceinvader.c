@@ -9,7 +9,7 @@ static Image spaceInvaderGetImage();
 static CollisionShape* spaceInvaderGetCollisionShape();
 enum AIstateCodes {TIMER};
 
-#define CHANGETIME 50;
+#define CHANGETIME 30;
 
 
 static void think(Game* game, int id) {
@@ -22,12 +22,14 @@ static void think(Game* game, int id) {
   }
 }
 
-void spaceInvaderSpawn(Game* game) {
+void spaceInvaderSpawn(Game* game, IntVector position) {
+  if (game->capacity <= game->numberOfThings)
+    return;
+
   int id = game->numberOfThings++;
 
   game->images[id] = spaceInvaderGetImage();
-  game->positions[id].x = 10;
-  game->positions[id].y = 10;
+  game->positions[id] = position;
   game->velocities[id].x = 1;
 
   game->areVisible[id] = true;
