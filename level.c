@@ -13,12 +13,12 @@ void level(Game* game, int n) {
 }
 
 void level1(Game* game) {
-    IntVector position;
-    position.y = 5;
-    position.x = 10;
+    IntVector spawnPosition;
+    spawnPosition.y = 10;
+    spawnPosition.x = 10;
     int spacing = 30;
-    for (int i = 0; i < 7; i++) {
-        spaceInvaderSpawn(game, position);
-        position.x += spacing;
+    while (spawnPosition.x < game->playArea.x - 30) {
+        spaceInvaderSpawn(game, spawnPosition);
+        spawnPosition.x += spacing;
     }
 }

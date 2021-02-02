@@ -12,8 +12,8 @@ static CollisionShape* playerGetCollisionShape();
 void playerSpawn(Game* game)
 {
   game->images[0] = playerGetImage();
-  game->positions[0].x = 120;
-  game->positions[0].y = 45;
+  game->positions[0].x = game->playArea.x / 2;
+  game->positions[0].y = game->playArea.y - 10;
 
   game->areVisible[0] = true;
   game->areAlive[0] = true;

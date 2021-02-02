@@ -49,7 +49,7 @@ struct CollisionShape {
 };
 
 struct Game {
-  IntVector size;
+  IntVector playArea;
   int capacity;
   int numberOfThings;
   bool isExiting;

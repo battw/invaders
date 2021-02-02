@@ -73,12 +73,12 @@ void loop(Game* game)
 }
 
 
-Game* gameNew(IntVector size)
+Game* gameNew(IntVector playArea)
 {
   Game* game = calloc(1, sizeof(Game));
 
-  game->size = size;
-  game->capacity = 256;
+  game->playArea = playArea;
+  game->capacity = 4096;
   game->numberOfThings = 1;
   game->isExiting = 0;
   game->isPaused = 0;
@@ -115,11 +115,15 @@ int main()
   rendererInit();
   inputInit(playerUp, playerDown, playerLeft, playerRight, playerFire, gamePause, gameQuit);
 
-  Game* game = gameNew(rendererGetSize());
+  IntVector playArea;
+  playArea.x = 110;
+  playArea.y = 50;
+
+  Game* game = gameNew(playArea);
   level(game, 1);
   loop(game);
 
-  rendererDeinit();
+  rendererDestroy();
   return 0;
 }
 

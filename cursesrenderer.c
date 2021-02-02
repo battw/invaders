@@ -28,10 +28,11 @@ void rendererInit() {
   halfdelay(2);
 }
 
-void rendererDeinit() {
+void rendererDestroy() {
   endwin();               // cleanup
 }
 
+/** Draw all the visible images to the screen and refresh. */
 void render(Game* game) {
   clear();
   drawVisible(game);

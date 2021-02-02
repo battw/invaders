@@ -7,18 +7,21 @@
 
 static Image spaceInvaderGetImage();
 static CollisionShape* spaceInvaderGetCollisionShape();
-enum AIstateCodes {TIMER};
+enum AIstateCodes {CLOCK};
 
-#define CHANGETIME 30;
+#define HORIZONTAL_CHANGE_TIME 30
+#define VERTICAL_CHANGE_TIME 20
 
 
 static void think(Game* game, int id) {
   if (!game->areAlive[id]) return;
 
-  int timer = --game->aiStates[id][TIMER];
-  if (timer == 0) {
-    game->aiStates[id][TIMER] = CHANGETIME;
+  int clock = ++game->aiStates[id][CLOCK];
+  if (clock % HORIZONTAL_CHANGE_TIME == 0) {
     game->velocities[id].x = -game->velocities[id].x;
+  }
+  if (clock % VERTICAL_CHANGE_TIME == 0) {
+    game->velocities[id].y = -game->velocities[id].y;
   }
 }
 
@@ -31,12 +34,13 @@ void spaceInvaderSpawn(Game* game, IntVector position) {
   game->images[id] = spaceInvaderGetImage();
   game->positions[id] = position;
   game->velocities[id].x = 1;
+  game->velocities[id].y = 1;
 
   game->areVisible[id] = true;
   game->areAlive[id] = true;
 
   game->aiStates[id] = calloc(1, sizeof(int));
-  game->aiStates[id][TIMER] = CHANGETIME;
+  game->aiStates[id][CLOCK] = HORIZONTAL_CHANGE_TIME;
   game->aiFunctions[id] = think;
 
   game->collisionShapes[id] = *spaceInvaderGetCollisionShape();

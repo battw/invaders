@@ -4,7 +4,7 @@
 #include "datatypes.h"
 
 void rendererInit();
-void rendererDeinit();
+void rendererDestroy();
 void render(Game* game);
 IntVector rendererGetSize();
 void rendererDisplayMessage(char* msg);
